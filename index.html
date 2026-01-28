@@ -258,23 +258,36 @@
   // ゲーム進行
   // -----------------------------------------
   
-  function startTest(){
-    currentLength = startLength;
-    roundRecords = [];
-    
-    startBtn.style.display = "none";
-    audioSelectDiv.style.display = "none";
-    resultsDiv.style.display = 'none';
-    tbody.innerHTML = '';
+// ★開始直前メッセージ切替用（何秒前に出すか）
+const PRE_START_NOTICE = 5000; // 5秒前
 
-    // 音源再生開始
-    playSelectedAudio();
-    
-    // 音だけ流して5秒待ってからレベル開始
-    setTimeout(() => {
-      startLevel();
-    }, initialAudioWait);
-  }
+function startTest(){
+  currentLength = startLength;
+  roundRecords = [];
+
+  startBtn.style.display = "none";
+  audioSelectDiv.style.display = "none";
+  resultsDiv.style.display = 'none';
+  tbody.innerHTML = '';
+
+  // 待機中表示（最初）
+  setVisualFeedback('idle');
+  message.textContent = '音声を聴きながらお待ちください';
+
+  // 音源再生開始（ループ）
+  playSelectedAudio();
+
+  // ★開始直前にメッセージ変更
+  setTimeout(() => {
+    message.textContent = '間もなく始まります';
+  }, initialAudioWait - PRE_START_NOTICE);
+
+  // ★テスト開始
+  setTimeout(() => {
+    startLevel();
+  }, initialAudioWait);
+}
+
 
   function startLevel(){
     roundRecords.push({ level: currentLength, attempts: 0, failedOnce: false, pass: false });
