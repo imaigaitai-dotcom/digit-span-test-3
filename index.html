@@ -188,10 +188,21 @@
   
   // 音量設定
   audioObjMusic.volume = 0.2;  // ★変更点: 音楽の音量をさらに下げる
-  audioObjNature.volume = 1.0; // 自然の音は最大 (1.0)
+  audioObjNature.volume = 0.9; // 自然の音は最大 (1.0)
 
-  audioObjMusic.loop = true;
+  audioObjMusic.loop = false;
   audioObjNature.loop = true;
+
+  // ★ 5分50秒で音楽を強制ループ
+const LOOP_END_TIME = 350; // 秒（5分50秒）
+
+audioObjMusic.addEventListener('timeupdate', () => {
+  if (audioObjMusic.currentTime >= LOOP_END_TIME) {
+    audioObjMusic.currentTime = 0;
+    audioObjMusic.play();
+  }
+});
+
 
   // DOM要素
   const startBtn = document.getElementById('startBtn');
@@ -499,4 +510,5 @@ function startTest(){
 </body>
 
 </html>
+
 
